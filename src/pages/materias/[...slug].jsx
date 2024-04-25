@@ -1,12 +1,41 @@
+'use client'
+
 import { useRouter } from "next/router"
+import db from "../../../utils/firebase"
+import { collection, doc, getDocs } from "firebase/firestore"
+import { useEffect, useState } from "react"
 
-import { doc, getDoc } from "firebase/firestore"
 
-export default function post(){
+export default function Post() {
     const router = useRouter()
-    return(
+
+    const [post, setPost] = useState(null)
+
+    useEffect(() => {
+        const getPost = async () => {
+            const colecao = collection(db, 'Post')
+            const querySnapshot = await getDocs(colecao)
+            const snapData = []
+
+            querySnapshot.forEach((doc) => {
+                snapData.push({id: doc.id, ...doc.data()})
+            })
+
+            console.log(snapData)
+
+            setPost(snapData)
+        }
+
+        getPost()
+    }, [])
+
+    return (
         <div>
-           {router.query.slug}
+           {post.map((post, id ) => (
+            <div key={id}>
+                <p>{post.titulo}</p>
+            </div>
+           ))}
         </div>
     )
 }
