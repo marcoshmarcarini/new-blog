@@ -16,27 +16,24 @@ export default function CadastrarPost() {
             titulo: post.titulo,
             subtitulo: post.subtitulo,
             text: post.texto,
-            timeStamp: new Date()
+            timeStamp: new Date(),
+            slug: post.titulo.toLowerCase().replaceAll(' ', '-')
         })
-
-    }
-
-    useEffect(() => {
-        inserirDados
-
+        
+        
         setPost({
             titulo: '', subtitulo: '',
             texto: '', image: null
         })
 
-    }, [])
+    }
 
     return (
         <div>
-            <form>
-                <input type="text" placeholder={`Título`} onChange={(e) => setPost(e.target.value)} />
-                <input type="text" placeholder={`Subtítulo`} onChange={(e) => setPost(e.target.value)} />
-                <textarea  placeholder={`Texto`} onChange={(e) => setPost(e.target.value)} />
+            <form className={`flex flex-col justify-center items-center h-screen`}>
+                <input type="text" placeholder={`Título`} onChange={(e) => setPost({...post, titulo: e.target.value})} />
+                <input type="text" placeholder={`Subtítulo`} onChange={(e) => setPost({...post, subtitulo: e.target.value})} />
+                <textarea  placeholder={`Texto`} onChange={(e) => setPost({...post, texto: e.target.value})} />
                 <input type="submit" value="Postar" onClick={inserirDados} />
                 
             </form>
